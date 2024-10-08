@@ -1,0 +1,40 @@
+<div class="form-container">
+    <h4>✔️ {{ editing ? ' Editar Item' : 'Adicionar Item à Lista de Compras' }} ✔️</h4>
+
+    <form [formGroup]="addItemForm" (ngSubmit)="addItem()" novalidate>
+
+
+        <div class="form-group">
+            <label for="itemName">Nome do Item: </label>
+            <input class="input" id="itemName" type="text" formControlName="name" placeholder="Digite o nome do item"
+                [class.invalid]="itemName.invalid && (itemName.dirty || itemName.touched)"
+                aria-describedby="itemNameError" />
+
+            <div *ngIf="itemName.invalid && (itemName.dirty || itemName.touched)" id="itemNameError">
+                <small *ngIf="itemName.errors?.['required']">Nome do item é obrigatório!</small>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label for="itemPrice">Preço do Item: </label>
+            <input class="input" id="itemPrice" type="number" formControlName="price" placeholder="Digite o preço do item"
+                [class.invalid]="itemPrice.invalid && (itemPrice.dirty || itemPrice.touched)"
+                aria-describedby="itemPriceError" />
+
+            <div *ngIf="itemPrice.invalid && (itemPrice.dirty || itemPrice.touched)" id="itemPriceError">
+                <small *ngIf="itemPrice.errors?.['required']">Preço obrigatório <br /> Caso não saiba, <strong>Digite '
+                        0 '</strong></small>
+            </div>
+        </div>
+
+        <div *ngIf="!editing">
+            <button type="submit" [disabled]="addItemForm.invalid">Adicionar Item</button>
+        </div>
+
+        <div class="box-btn-Edit" *ngIf="editing">
+            <button class="edit" type="submit" [disabled]="addItemForm.invalid">Concluir Edição</button>
+            <button class="cancel" type="button" (click)="cancelEdit()">Cancelar</button>
+        </div>
+    </form>
+</div>

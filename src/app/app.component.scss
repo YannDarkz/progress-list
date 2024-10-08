@@ -1,0 +1,24 @@
+
+.notifyAdd {
+    text-align: center;
+    background-color: rgba(10, 155, 29, 0.781);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    color: rgb(3, 41, 255);
+    z-index: 5;
+}
+
+.notifyRemove {
+    text-align: center;
+    background-color: rgba(226, 19, 19, 0.781);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    color: rgb(218, 221, 233);
+    z-index: 5;
+
+}
+.none {
+    opacity: 0;
+}
