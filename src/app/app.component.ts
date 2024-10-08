@@ -3,36 +3,37 @@ import { RouterOutlet } from '@angular/router';
 
 import { ListItemsComponent } from './components/list-items/list-items.component';
 import { BuyItemComponent } from './components/buy-item/buy-item.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, BuyItemComponent, ListItemsComponent],
+  imports: [RouterOutlet, BuyItemComponent, ListItemsComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  addTextNotify = '';
   removeTextNotify = ''
+  addTextNotify = '';
 
   notifyAddItem(): void {
-    this.addTextNotify = 'adcionado com sucesso!'
+    this.addTextNotify = 'adcionado com sucesso! ✅'
     setTimeout(() => {
       this.addTextNotify = ''
-    },1000)
+    },2000)
   }
 
   notifyEditItem(): void {
-    this.addTextNotify = 'Editado com sucesso!'
+    this.addTextNotify = 'Editado com sucesso! ✅'
     setTimeout(() => {
       this.addTextNotify = ''
-    },1000)
+    },2000)
   }
 
   notifyRemoveItem(): void {
-    this.removeTextNotify = 'Excluido com sucesso!'
+    this.addTextNotify = 'Removido com sucesso! ✅'
     setTimeout(() => {
-      this.removeTextNotify = ''
+      this.addTextNotify = ''
     },1000)
   }
 
