@@ -22,13 +22,6 @@
       font-size: 16px;
     }
     
-    // @media(max-width:440px){
-    //   font-size: 13px;
-      
-    // }
-    // @media(max-width:340px){
-    //   font-size: 8px;
-    // }
   }
   
   .form-group {
@@ -41,8 +34,6 @@
     font-weight: bold;
   }
 
-
-
   input {
     border: none;
     border-bottom: 2px solid #3498db; /* Linha cinza inicial */
@@ -51,7 +42,6 @@
     font-size: 16px;
     padding: 8px 5px;
     transition: border-color 0.3s ease-in-out;
-    
   }
   
   input:focus {
@@ -63,7 +53,6 @@
     font-style: italic;
   }
 
-  
   input.invalid {
     border-bottom: 2px solid #d81919; 
   }
