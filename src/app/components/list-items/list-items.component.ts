@@ -20,6 +20,7 @@ export class ListItemsComponent implements OnInit {
   @Output() notifyAddItem = new EventEmitter<void>()
   @Output() notifyUpdatedItem = new EventEmitter<void>()
   @Output() notifyRemoveItem = new EventEmitter<void>()
+  @Output() notifyByuItem = new EventEmitter<void>()
 
 
 
@@ -70,20 +71,27 @@ export class ListItemsComponent implements OnInit {
     this.notifyRemoveItem.emit()
   }
 
+  buyItem(item: any, index: number) {
+    const purchasedItems = JSON.parse(localStorage.getItem('listaComprados') || '[]');
+    purchasedItems.push(item);
+    localStorage.setItem('listaComprados', JSON.stringify(purchasedItems));
+    
+    const storedItems = JSON.parse(localStorage.getItem('listaCompras') || '[]');
+    storedItems.splice(index, 1);
+    localStorage.setItem('listaCompras', JSON.stringify(storedItems));
+    this.loadItems();
+    
+    this.buyItemComponent.loadPurchasedItems();
+    this.notifyByuItem.emit()
+
+  }
+
   clearList(): void {
     localStorage.removeItem('listaCompras');
     this.items = [];
   }
 
 
-  buyItem(item: any, index: number) {
-    const purchasedItems = JSON.parse(localStorage.getItem('listaComprados') || '[]');
-    purchasedItems.push(item);
-    localStorage.setItem('listaComprados', JSON.stringify(purchasedItems));
-    this.deleteItem(index);
-    this.buyItemComponent.loadPurchasedItems();
-
-  }
 
   onNotifyAddItem(): void {
     this.notifyAddItem.emit()
@@ -93,10 +101,6 @@ export class ListItemsComponent implements OnInit {
   onNotifyUpdatedItem(): void {
     this.notifyUpdatedItem.emit()
   }
-
-  // onLoadBuyItems(): void {
-  //   this.loadBuyItems.emit()
-  // }
 
 
   clearListBuy(): void {

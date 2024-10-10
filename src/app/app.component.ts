@@ -37,4 +37,11 @@ export class AppComponent {
     },1000)
   }
 
+  notifyAddBuyItem(): void {
+    this.addTextNotify = 'adcionado No carrinho! ✅'
+    setTimeout(() => {
+      this.addTextNotify = ''
+    },1500)
+  }
+
 }

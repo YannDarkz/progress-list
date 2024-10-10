@@ -21,11 +21,12 @@
             <input class="input" id="itemPrice" type="number" formControlName="price" placeholder="Digite o preço do item"
                 [class.invalid]="itemPrice.invalid && (itemPrice.dirty || itemPrice.touched)"
                 aria-describedby="itemPriceError" />
-
-            <div *ngIf="itemPrice.invalid && (itemPrice.dirty || itemPrice.touched)" id="itemPriceError">
-                <small *ngIf="itemPrice.errors?.['required']">Preço obrigatório <br /> Caso não saiba, <strong>Digite '
-                        0 '</strong></small>
-            </div>
+                
+                <div *ngIf="itemPrice.invalid && (itemPrice.dirty || itemPrice.touched)" id="itemPriceError">
+                    <small *ngIf="itemPrice.errors?.['required']">Preço obrigatório <br />  </small>
+                    <strong>Caso não saiba, Digite '
+                        0 '</strong>
+                </div>
         </div>
 
         <div *ngIf="!editing">
