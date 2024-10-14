@@ -102,23 +102,33 @@ export class ListItemsComponent implements OnInit {
     this.notifyUpdatedItem.emit()
   }
 
+  removeItemBuy(): void {
+    this.notifyRemoveItem.emit()
+  }
+
 
   clearListBuy(): void {
     localStorage.removeItem('listaComprados');
   }
 
   scrollToTop(): void {
-    const scrollDuration = 500;
-    const scrollStep = -window.scrollY / (scrollDuration / 500);
-    const scrollInterval = setInterval(() => {
-      if (window.scrollY !== 0) {
-        window.scrollBy(0, scrollStep);
-      } else {
-        clearInterval(scrollInterval);
-      }
-    }, 15);
+    const scrollDuration = 30; // Tempo total em ms
+    const startPosition = window.scrollY;
+    const startTime = performance.now();
 
+    const animateScroll = (currentTime: number) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / scrollDuration, 1);
+        const scrollPosition = startPosition * (1 - progress);
+        
+        window.scrollTo(0, scrollPosition);
 
-  }
+        if (progress < 1) {
+            requestAnimationFrame(animateScroll);
+        }
+    };
+
+    requestAnimationFrame(animateScroll);
+}
 
 }

@@ -19,4 +19,4 @@
         <p>A lista de compras está vazia. Adicione algum item 🍇</p>
     </ng-template>
 </div>
-<app-buy-item (itemRemoved)="loadItems()"></app-buy-item>
+<app-buy-item (removeItemBuy)="removeItemBuy()"  (itemRemoved)="loadItems()"></app-buy-item>

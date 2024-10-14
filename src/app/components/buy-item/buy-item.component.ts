@@ -15,6 +15,7 @@ export class BuyItemComponent implements OnInit {
   buyPrice: number = 0
 
   @Output() itemRemoved = new EventEmitter<void>();
+  @Output() removeItemBuy = new EventEmitter<void>()
 
   ngOnInit(): void {
       this.loadPurchasedItems();
@@ -47,6 +48,8 @@ export class BuyItemComponent implements OnInit {
     this.loadPurchasedItems();
 
     this.itemRemoved.emit()
+    this.removeItemBuy.emit()
+
   }
 
 }
