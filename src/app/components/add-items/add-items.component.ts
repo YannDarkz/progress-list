@@ -12,14 +12,16 @@ import { CommonModule } from '@angular/common';
 })
 export class AddItemsComponent {
 
-  @Input() currentItemIndex: number | null = null
   @Output() itemUpdated = new EventEmitter<void>()
   @Output() notifyAddItem = new EventEmitter<void>()
   @Output() notifyEditItem = new EventEmitter<void>()
-
+  
+  currentItemIndex: number | null = null
+  
   addItemForm = this.formBuilder.group({
     name: ['', Validators.required],
     price: [null, [Validators.required, Validators.min(0)]],
+    quantity: [1, [Validators.required, Validators.min(1)] ]
   });
 
   editing: boolean = false
@@ -73,6 +75,10 @@ export class AddItemsComponent {
   get itemPrice() {
     return this.addItemForm.get('price')!;
   }
+
+  get itemQuantity() {
+    return this.addItemForm.get('quantity')!;
+}
 
 
 

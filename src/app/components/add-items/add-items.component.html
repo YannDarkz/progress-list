@@ -29,6 +29,18 @@
                 </div>
         </div>
 
+        <div class="form-group">
+            <label for="itemQuantity">Quantidade do Item: </label>
+            <input class="input" id="itemQuantity" type="number" formControlName="quantity" placeholder="Digite a quantidade"
+                   [class.invalid]="itemQuantity.invalid && (itemQuantity.dirty || itemQuantity.touched)"
+                   aria-describedby="itemQuantityError" />
+        
+            <div *ngIf="itemQuantity.invalid && (itemQuantity.dirty || itemQuantity.touched)" id="itemQuantityError">
+                <small *ngIf="itemQuantity.errors?.['required']">Quantidade é obrigatória!</small>
+                <small *ngIf="itemQuantity.errors?.['min']">A quantidade deve ser pelo menos 1!</small>
+            </div>
+        </div>
+
     
 
         <div *ngIf="!editing">

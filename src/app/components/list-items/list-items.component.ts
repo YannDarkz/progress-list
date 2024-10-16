@@ -12,7 +12,7 @@ import { BuyItemComponent } from '../buy-item/buy-item.component';
   styleUrl: './list-items.component.scss'
 })
 export class ListItemsComponent implements OnInit {
-  items: Array<{ name: string, price: number }> = []
+  items: Array<{ name: string, price: number, quantity: number }> = []
 
   totalPrice: number = 0
 
@@ -49,7 +49,7 @@ export class ListItemsComponent implements OnInit {
   }
 
   calculateTotalPrice(): void {
-    this.totalPrice = this.items.reduce((acc, item) => acc + item.price, 0);
+    this.totalPrice = this.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   }
 

@@ -1,4 +1,4 @@
-<app-add-items (notifyAddItem)="onNotifyAddItem()" (notifyEditItem)="onNotifyUpdatedItem()"></app-add-items>
+<app-add-items  (notifyAddItem)="onNotifyAddItem()" (notifyEditItem)="onNotifyUpdatedItem()"></app-add-items>
 <div class="list-container">
     <h4>lista de compras 📋</h4>
     <h6><strong>💸 Total:</strong> {{totalPrice | currency:'BRL'}}</h6>
@@ -8,6 +8,7 @@
             <app-card-list
                 [name]="item.name"
                 [price]="item.price"
+                [quantity]="item.quantity"
                 (edit)="editItem(item, i)"
                 (delete)="deleteItem(i)"
                 (buy)="buyItem(item, i)"

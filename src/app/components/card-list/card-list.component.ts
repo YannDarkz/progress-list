@@ -12,6 +12,7 @@ export class CardListComponent {
 
   @Input() name!: string;
   @Input() price!: number;
+  @Input() quantity!: number;
 
   @Output() edit = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
