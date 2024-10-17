@@ -21,7 +21,8 @@ export class AddItemsComponent {
   addItemForm = this.formBuilder.group({
     name: ['', Validators.required],
     price: [null, [Validators.required, Validators.min(0)]],
-    quantity: [1, [Validators.required, Validators.min(1)] ]
+    quantity: [1, [Validators.required, Validators.min(1)] ],
+    category: []
   });
 
   editing: boolean = false
