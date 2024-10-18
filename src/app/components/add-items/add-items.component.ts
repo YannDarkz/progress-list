@@ -35,9 +35,9 @@ export class AddItemsComponent {
       const currentList = JSON.parse(localStorage.getItem('listaCompras') || '[]');
 
       if (this.editing && this.currentItemIndex !== null) {
-        currentList[this.currentItemIndex] = newItem
+        currentList[this.currentItemIndex] = newItem;
       } else {
-        currentList.push(newItem)
+        currentList.push(newItem);
       }
 
       localStorage.setItem('listaCompras', JSON.stringify(currentList));
@@ -50,8 +50,8 @@ export class AddItemsComponent {
 
       }
       this.editing = false;
-      this.currentItemIndex = null
-      this.itemUpdated.emit()
+      this.currentItemIndex = null;
+      this.itemUpdated.emit();
     }
   }
 
@@ -80,9 +80,5 @@ export class AddItemsComponent {
   get itemQuantity() {
     return this.addItemForm.get('quantity')!;
 }
-
-
-
-
 
 }
