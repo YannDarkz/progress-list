@@ -18,7 +18,7 @@
 
         <div class="form-group">
             <label for="itemPrice">Preço do Item: </label>
-            <input class="input" id="itemPrice" type="number" formControlName="price" placeholder="Digite o preço do item"
+            <input class="input price" id="itemPrice" type="number" formControlName="price" placeholder="Digite o preço do item"
                 [class.invalid]="itemPrice.invalid && (itemPrice.dirty || itemPrice.touched)"
                 aria-describedby="itemPriceError" />
                 
@@ -31,7 +31,7 @@
 
         <div class="form-group">
             <label for="itemQuantity">Quantidade do Item: </label>
-            <input class="input" id="itemQuantity" type="number" formControlName="quantity" placeholder="Digite a quantidade"
+            <input class="input qtd" id="itemQuantity" type="number" formControlName="quantity" placeholder="Digite a quantidade"
                    [class.invalid]="itemQuantity.invalid && (itemQuantity.dirty || itemQuantity.touched)"
                    aria-describedby="itemQuantityError" />
         
