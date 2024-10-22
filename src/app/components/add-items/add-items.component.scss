@@ -34,7 +34,7 @@
     font-weight: bold;
   }
 
-  input {
+  input, select {
     border: none;
     border-bottom: 2px solid #3498db; /* Linha cinza inicial */
     outline: none;
@@ -44,7 +44,7 @@
     transition: border-color 0.3s ease-in-out;
   }
   
-  input:focus {
+  input:focus, select:focus {
     border-bottom: 2px solid #329e3b; 
   }
   
@@ -53,7 +53,7 @@
     font-style: italic;
   }
 
-  input.invalid {
+  input.invalid, select.invalid {
     border-bottom: 2px solid #d81919; 
   }
 

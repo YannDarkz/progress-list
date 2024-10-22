@@ -23,10 +23,25 @@
                 aria-describedby="itemPriceError" />
                 
                 <div *ngIf="itemPrice.invalid && (itemPrice.dirty || itemPrice.touched)" id="itemPriceError">
-                    <small *ngIf="itemPrice.errors?.['required']">Preço obrigatório <br />  </small>
-                    <strong>Caso não saiba, Digite '
-                        0 '</strong>
+                    <small *ngIf="itemPrice.errors?.['required']">Preço obrigatório  </small>
                 </div>
+                <strong>Caso não saiba, Digite ' 0 '</strong>
+        </div>
+
+        <div>
+            <label for="category">Categoria:</label>
+            <select formControlName="category" [class.invalid]="itemCategory.invalid && (itemCategory.touched || itemCategory.dirty)" id="category" >
+                <option value="">Selecione</option>
+                <option value="cold">Frios</option>
+                <option value="cleaning">Limpeza</option>
+                <option value="perishables">perecíveis</option>
+                <option value="others">outros</option>
+            </select>
+            
+            <div *ngIf="itemCategory.invalid && (itemCategory.touched || itemCategory.touched)">
+                <small *ngIf="itemCategory.errors?.['required']">categoria é obrigatória.  </small>
+                
+            </div>
         </div>
 
         <div class="form-group">
@@ -40,6 +55,8 @@
                 <small *ngIf="itemQuantity.errors?.['min']">A quantidade deve ser pelo menos 1!</small>
             </div>
         </div>
+
+       
 
     
 

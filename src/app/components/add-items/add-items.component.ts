@@ -22,7 +22,7 @@ export class AddItemsComponent {
     name: ['', Validators.required],
     price: [null, [Validators.required, Validators.min(0)]],
     quantity: [1, [Validators.required, Validators.min(1)] ],
-    category: []
+    category: ['', Validators.required]
   });
 
   editing: boolean = false
@@ -79,6 +79,10 @@ export class AddItemsComponent {
 
   get itemQuantity() {
     return this.addItemForm.get('quantity')!;
+}
+
+get itemCategory() {
+  return this.addItemForm.get('category')!;
 }
 
 }

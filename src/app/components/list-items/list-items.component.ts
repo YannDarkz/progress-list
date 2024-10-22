@@ -4,6 +4,18 @@ import { CardListComponent } from '../card-list/card-list.component';
 import { AddItemsComponent } from '../add-items/add-items.component';
 import { BuyItemComponent } from '../buy-item/buy-item.component';
 
+interface Item {
+  name: string;
+  price: number;
+  quantity: number;
+  category: string;
+}
+
+interface Category {
+  name: string;
+  items: Item[]; 
+}
+
 @Component({
   selector: 'app-list-items',
   standalone: true,
@@ -12,7 +24,14 @@ import { BuyItemComponent } from '../buy-item/buy-item.component';
   styleUrl: './list-items.component.scss'
 })
 export class ListItemsComponent implements OnInit {
-  items: Array<{ name: string, price: number, quantity: number }> = []
+  items: Array<{ name: string, price: number, quantity: number, category: string }> = []
+
+  itemCategories: Category[] = [
+    { name: 'Cold', items: [] },
+    { name: 'Cleaning', items: [] },
+    { name: 'Perishables', items: [] },
+    { name: 'Others', items: [] },
+  ];
 
   totalPrice: number = 0
 
@@ -44,8 +63,22 @@ export class ListItemsComponent implements OnInit {
     const storedItems = localStorage.getItem('listaCompras')
     if (storedItems) {
       this.items = JSON.parse(storedItems);
+      this.organizetemsByCategory()
       this.calculateTotalPrice();
     }
+  }
+
+  organizetemsByCategory(): void {
+    this.itemCategories.forEach(category => category.items = []);
+    this.items.forEach(item => {
+      // console.log('Item category:', item.category);
+      const category = this.itemCategories.find(cat => cat.name.toLowerCase() === item.category.toLowerCase());
+      if(category){
+        category.items.push(item);
+        // console.log('push?');
+        
+      }
+    });
   }
 
   calculateTotalPrice(): void {
