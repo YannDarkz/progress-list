@@ -3,19 +3,24 @@
     <h4>lista de compras 📋</h4>
     <h6><strong>💸 Total:</strong> {{totalPrice | currency:'BRL'}}</h6>
 
-    <div *ngFor="let category of itemCategories">
-        <h5>{{category.name}}</h5>
-
-        <ul *ngIf="category.items.length > 0; ">
-            <li *ngFor="let item of category.items; let i =  index">
-                <app-card-list [name]="item.name" [price]="item.price" [quantity]="item.quantity"
-                    (edit)="editItem(item, i)" (delete)="deleteItem(i)" (buy)="buyItem(item, i)"></app-card-list>
-            </li>
+    <div *ngFor="let category of itemsByCategory | keyvalue">
+        <h5>{{ category.key }}</h5>
+        <ul *ngIf="category.value.length > 0; else noItems">
+          <li *ngFor="let item of category.value; let i = index">
+            <app-card-list
+              [name]="item.name"
+              [price]="item.price"
+              [quantity]="item.quantity"
+              (edit)="editItem(item, i, category.key)"
+              (delete)="deleteItem(category.key, i)"
+              (buy)="buyItem(item, category.key, i)"
+            ></app-card-list>
+          </li>
         </ul>
-    </div>
+      </div>
 
     <ng-template #noItems>
         <p>A lista de compras está vazia. Adicione algum item 🍇</p>
     </ng-template>
-</div>
+
 <app-buy-item (removeItemBuy)="removeItemBuy()" (itemRemoved)="loadItems()"></app-buy-item>
