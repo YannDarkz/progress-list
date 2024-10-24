@@ -24,7 +24,7 @@ interface Category {
   styleUrl: './list-items.component.scss'
 })
 export class ListItemsComponent implements OnInit {
-  items: Array<{ name: string, price: number, quantity: number, category: string }> = []
+  items: Array<Item> = []
 
   itemCategories: Category[] = [
     { name: 'Cold', items: [] },
@@ -32,6 +32,13 @@ export class ListItemsComponent implements OnInit {
     { name: 'Perishables', items: [] },
     { name: 'Others', items: [] },
   ];
+
+  itemsByCategory = {
+    cold: [] as Item[],
+    perishables: [] as Item[],
+    cleaning: [] as Item[],
+    others: [] as Item[],
+  };
 
   totalPrice: number = 0
 
@@ -60,10 +67,10 @@ export class ListItemsComponent implements OnInit {
   }
 
   loadItems(): void {
-    const storedItems = localStorage.getItem('listaCompras')
+    const storedItems = localStorage.getItem('itensCategory')
     if (storedItems) {
-      this.items = JSON.parse(storedItems);
-      this.organizetemsByCategory()
+      this.itemsByCategory = JSON.parse(storedItems);
+      // this.organizetemsByCategory();
       this.calculateTotalPrice();
     }
   }
@@ -73,22 +80,24 @@ export class ListItemsComponent implements OnInit {
     this.items.forEach(item => {
       // console.log('Item category:', item.category);
       const category = this.itemCategories.find(cat => cat.name.toLowerCase() === item.category.toLowerCase());
+      console.log("cat", category);
+      
       if(category){
-        category.items.push(item);
-        // console.log('push?');
-        
+        category.items.push(item);    
       }
     });
   }
 
   calculateTotalPrice(): void {
-    this.totalPrice = this.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    this.totalPrice = Object.values(this.itemsByCategory)
+    .flat()
+    .reduce((acc, item) => acc + item.price * item.quantity, 0)
 
   }
 
-  editItem(item: any, index: number): void {
+  editItem(item: any, index: number, category: keyof typeof this.itemsByCategory): void {
     if (this.addItemsComponent) {
-      this.addItemsComponent.startEdit(item, index);
+      this.addItemsComponent.startEdit(item, index, category);
       this.scrollToTop()
     } else {
       console.log('addItemsComponent não está inicializado');
@@ -96,26 +105,29 @@ export class ListItemsComponent implements OnInit {
   }
 
 
-  deleteItem(index: number): void {
-    const storedItems = JSON.parse(localStorage.getItem('listaCompras') || '[]');
-    storedItems.splice(index, 1);
-    localStorage.setItem('listaCompras', JSON.stringify(storedItems));
+  deleteItem(category: keyof typeof this.itemsByCategory, index: number): void {
+    this.itemsByCategory[category].splice(index, 1)
+    this.saveItems()
     this.loadItems();
     this.notifyRemoveItem.emit()
   }
 
-  buyItem(item: any, index: number) {
+  buyItem(item: any, category: keyof typeof this.itemsByCategory, index: number) {
     const purchasedItems = JSON.parse(localStorage.getItem('listaComprados') || '[]');
     purchasedItems.push(item);
     localStorage.setItem('listaComprados', JSON.stringify(purchasedItems));
     
-    const storedItems = JSON.parse(localStorage.getItem('listaCompras') || '[]');
-    storedItems.splice(index, 1);
-    localStorage.setItem('listaCompras', JSON.stringify(storedItems));
+    this.itemsByCategory[category].splice(index, 1);
+    this.saveItems();
     this.loadItems();
     
     this.buyItemComponent.loadPurchasedItems();
     this.notifyByuItem.emit()
+
+  }
+
+  saveItems(): void {
+    localStorage.setItem('itensCategory', JSON.stringify(this.itemsByCategory));
 
   }
 
