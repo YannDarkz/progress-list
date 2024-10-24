@@ -11,10 +11,6 @@ interface Item {
   category: string;
 }
 
-interface Category {
-  name: string;
-  items: Item[]; 
-}
 
 @Component({
   selector: 'app-list-items',
@@ -26,12 +22,6 @@ interface Category {
 export class ListItemsComponent implements OnInit {
   items: Array<Item> = []
 
-  itemCategories: Category[] = [
-    { name: 'Cold', items: [] },
-    { name: 'Cleaning', items: [] },
-    { name: 'Perishables', items: [] },
-    { name: 'Others', items: [] },
-  ];
 
   itemsByCategory = {
     cold: [] as Item[],
@@ -70,23 +60,22 @@ export class ListItemsComponent implements OnInit {
     const storedItems = localStorage.getItem('itensCategory')
     if (storedItems) {
       this.itemsByCategory = JSON.parse(storedItems);
-      // this.organizetemsByCategory();
       this.calculateTotalPrice();
     }
   }
 
-  organizetemsByCategory(): void {
-    this.itemCategories.forEach(category => category.items = []);
-    this.items.forEach(item => {
-      // console.log('Item category:', item.category);
-      const category = this.itemCategories.find(cat => cat.name.toLowerCase() === item.category.toLowerCase());
-      console.log("cat", category);
+  // organizetemsByCategory(): void {
+  //   this.itemCategories.forEach(category => category.items = []);
+  //   this.items.forEach(item => {
+  //     // console.log('Item category:', item.category);
+  //     const category = this.itemCategories.find(cat => cat.name.toLowerCase() === item.category.toLowerCase());
+  //     console.log("cat", category);
       
-      if(category){
-        category.items.push(item);    
-      }
-    });
-  }
+  //     if(category){
+  //       category.items.push(item);    
+  //     }
+  //   });
+  // }
 
   calculateTotalPrice(): void {
     this.totalPrice = Object.values(this.itemsByCategory)
@@ -95,35 +84,46 @@ export class ListItemsComponent implements OnInit {
 
   }
 
-  editItem(item: any, index: number, category: keyof typeof this.itemsByCategory): void {
+  // editItem(item: Item, index: number, category: keyof typeof this.itemsByCategory): void {
+  //   if (this.addItemsComponent) {
+  //     this.addItemsComponent.startEdit(item, category, index);
+  //     this.scrollToTop();
+  //   } else {
+  //     console.log('addItemsComponent não está inicializado');
+  //   }
+  // }
+
+  editItem(item: Item, index: number, category: string): void {
+    const typedCategory = category as keyof typeof this.itemsByCategory;
     if (this.addItemsComponent) {
-      this.addItemsComponent.startEdit(item, index, category);
-      this.scrollToTop()
+      this.addItemsComponent.startEdit(item, typedCategory, index);
+      this.scrollToTop();
     } else {
       console.log('addItemsComponent não está inicializado');
     }
   }
 
 
-  deleteItem(category: keyof typeof this.itemsByCategory, index: number): void {
-    this.itemsByCategory[category].splice(index, 1)
-    this.saveItems()
+  deleteItem(category: string, index: number): void {
+    const typedCategory = category as keyof typeof this.itemsByCategory;
+    this.itemsByCategory[typedCategory].splice(index, 1);
+    this.saveItems();
     this.loadItems();
-    this.notifyRemoveItem.emit()
+    this.notifyRemoveItem.emit();
   }
 
-  buyItem(item: any, category: keyof typeof this.itemsByCategory, index: number) {
+  buyItem(item: Item, category: string, index: number): void {
+    const typedCategory = category as keyof typeof this.itemsByCategory;
     const purchasedItems = JSON.parse(localStorage.getItem('listaComprados') || '[]');
     purchasedItems.push(item);
     localStorage.setItem('listaComprados', JSON.stringify(purchasedItems));
-    
-    this.itemsByCategory[category].splice(index, 1);
+  
+    this.itemsByCategory[typedCategory].splice(index, 1);
     this.saveItems();
     this.loadItems();
-    
+  
     this.buyItemComponent.loadPurchasedItems();
-    this.notifyByuItem.emit()
-
+    this.notifyByuItem.emit();
   }
 
   saveItems(): void {
@@ -134,6 +134,14 @@ export class ListItemsComponent implements OnInit {
   clearList(): void {
     localStorage.removeItem('listaCompras');
     this.items = [];
+  }
+
+  get objectKeys() {
+    return Object.keys;
+  }
+
+  getItemsByCategory(category: keyof typeof this.itemsByCategory): Item[] {
+    return this.itemsByCategory[category] || [];
   }
 
 
