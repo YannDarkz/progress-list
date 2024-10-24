@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { CommonModule } from '@angular/common';
-
+import { Iproduct } from '../../interfaces/item-list';
 
 @Component({
   selector: 'app-add-items',
@@ -15,13 +15,21 @@ export class AddItemsComponent {
   @Output() itemUpdated = new EventEmitter<void>()
   @Output() notifyAddItem = new EventEmitter<void>()
   @Output() notifyEditItem = new EventEmitter<void>()
-  
+
+  itemsByCategory = {
+    cold: [] as Iproduct[],
+    perishables: [] as Iproduct[],
+    cleaning: [] as Iproduct[],
+    others: [] as Iproduct[]
+  };
+
+  currentItemCategory: keyof typeof this.itemsByCategory | null = null;
   currentItemIndex: number | null = null
-  
+
   addItemForm = this.formBuilder.group({
     name: ['', Validators.required],
     price: [null, [Validators.required, Validators.min(0)]],
-    quantity: [1, [Validators.required, Validators.min(1)] ],
+    quantity: [1, [Validators.required, Validators.min(1)]],
     category: ['', Validators.required]
   });
 
@@ -32,42 +40,52 @@ export class AddItemsComponent {
   addItem(): void {
     if (this.addItemForm.valid) {
       const newItem = this.addItemForm.value
-      const currentList = JSON.parse(localStorage.getItem('listaCompras') || '[]');
+      let currentList = JSON.parse(localStorage.getItem('itensCategory') || '{}');
 
-      if (this.editing && this.currentItemIndex !== null) {
-        currentList[this.currentItemIndex] = newItem;
-      } else {
-        currentList.push(newItem);
+      const category = this.addItemForm.value.category?.toLowerCase();
+      if (category) {
+        if (this.editing && this.currentItemIndex !== null) {
+          currentList[category][this.currentItemIndex] = newItem;
+        } else {
+          if (!currentList[category]) {
+            currentList[category] = []
+          }
+          currentList[category].push(newItem);
+        }
       }
 
-      localStorage.setItem('listaCompras', JSON.stringify(currentList));
-      this.addItemForm.reset();
+      localStorage.setItem('itensCategory', JSON.stringify(currentList));
+
       
-      if (this.editing && this.currentItemIndex !== null) {
-        this.notifyEditItem.emit();
-      } else {
-        this.notifyAddItem.emit();
-
-      }
+      this.itemUpdated.emit();
+      
+      this.addItemForm.reset();
       this.editing = false;
       this.currentItemIndex = null;
-      this.itemUpdated.emit();
+      this.currentItemCategory = null;
+    }
+    
+    if (this.editing) {
+      this.notifyEditItem.emit();
+    } else {
+      this.notifyAddItem.emit();
     }
   }
 
-  startEdit(item: any, index: number): void {
-
+  startEdit(item: any, category: keyof typeof this.itemsByCategory, index: number): void {
     this.addItemForm.patchValue(item);
     this.editing = true;
+    this.currentItemCategory = category;
     this.currentItemIndex = index;
-
   }
 
   cancelEdit() {
     this.addItemForm.reset();
     this.editing = false;
-    this.currentItemIndex = null
+    this.currentItemIndex = null;
+    this.currentItemCategory = null;
   }
+
 
   get itemName() {
     return this.addItemForm.get('name')!;
@@ -79,10 +97,10 @@ export class AddItemsComponent {
 
   get itemQuantity() {
     return this.addItemForm.get('quantity')!;
-}
+  }
 
-get itemCategory() {
-  return this.addItemForm.get('category')!;
-}
+  get itemCategory() {
+    return this.addItemForm.get('category')!;
+  }
 
 }
