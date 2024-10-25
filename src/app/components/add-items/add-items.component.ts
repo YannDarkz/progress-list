@@ -39,36 +39,50 @@ export class AddItemsComponent {
 
   addItem(): void {
     if (this.addItemForm.valid) {
-      const newItem = this.addItemForm.value
+      let newItem = this.addItemForm.value
       let currentList = JSON.parse(localStorage.getItem('itensCategory') || '{}');
 
-      const category = this.addItemForm.value.category?.toLowerCase();
-      if (category) {
-        if (this.editing && this.currentItemIndex !== null) {
-          currentList[category][this.currentItemIndex] = newItem;
-        } else {
-          if (!currentList[category]) {
-            currentList[category] = []
-          }
-          currentList[category].push(newItem);
+      const category = newItem.category?.toLowerCase();
+
+      if (this.editing && this.currentItemIndex !== null) {
+        if (this.currentItemCategory && this.currentItemCategory !== category) {
+          currentList[this.currentItemCategory].splice(this.currentItemIndex, 1);
         }
+        if (category) {
+          if (!currentList[category]) {
+            currentList[category] = [];
+          }
+
+          if (this.currentItemCategory === category) {
+            currentList[category][this.currentItemIndex] = newItem;
+          } else {
+            currentList[category].push(newItem);
+          }
+        }
+      } else if(category) {
+        if (!currentList[category]) {
+          currentList[category] = [];
+        }
+        currentList[category].push(newItem)
       }
+
 
       localStorage.setItem('itensCategory', JSON.stringify(currentList));
 
-      
+      if (this.editing) {
+        this.notifyEditItem.emit();
+      } else {
+        this.notifyAddItem.emit();
+      }
+
       this.itemUpdated.emit();
-      
+
       this.addItemForm.reset();
       this.editing = false;
       this.currentItemIndex = null;
       this.currentItemCategory = null;
-    }
-    
-    if (this.editing) {
-      this.notifyEditItem.emit();
-    } else {
-      this.notifyAddItem.emit();
+
+
     }
   }
 
