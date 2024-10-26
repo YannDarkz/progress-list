@@ -24,11 +24,12 @@ export class ListItemsComponent implements OnInit {
 
 
   itemsByCategory = {
-    cold: [] as Item[],
     perishables: [] as Item[],
+    cold: [] as Item[],
     cleaning: [] as Item[],
     others: [] as Item[],
   };
+
 
   totalPrice: number = 0
 
@@ -43,6 +44,10 @@ export class ListItemsComponent implements OnInit {
 
   @ViewChild(AddItemsComponent) addItemsComponent!: AddItemsComponent;
   @ViewChild(BuyItemComponent) buyItemComponent!: BuyItemComponent;
+  
+  metod(): void {
+    
+  }
 
   ngOnInit(): void {
     this.loadItems()
@@ -64,34 +69,12 @@ export class ListItemsComponent implements OnInit {
     }
   }
 
-  // organizetemsByCategory(): void {
-  //   this.itemCategories.forEach(category => category.items = []);
-  //   this.items.forEach(item => {
-  //     // console.log('Item category:', item.category);
-  //     const category = this.itemCategories.find(cat => cat.name.toLowerCase() === item.category.toLowerCase());
-  //     console.log("cat", category);
-      
-  //     if(category){
-  //       category.items.push(item);    
-  //     }
-  //   });
-  // }
-
   calculateTotalPrice(): void {
     this.totalPrice = Object.values(this.itemsByCategory)
-    .flat()
-    .reduce((acc, item) => acc + item.price * item.quantity, 0)
+      .flat()
+      .reduce((acc, item) => acc + item.price * item.quantity, 0)
 
   }
-
-  // editItem(item: Item, index: number, category: keyof typeof this.itemsByCategory): void {
-  //   if (this.addItemsComponent) {
-  //     this.addItemsComponent.startEdit(item, category, index);
-  //     this.scrollToTop();
-  //   } else {
-  //     console.log('addItemsComponent não está inicializado');
-  //   }
-  // }
 
   editItem(item: Item, index: number, category: string): void {
     const typedCategory = category as keyof typeof this.itemsByCategory;
@@ -117,17 +100,33 @@ export class ListItemsComponent implements OnInit {
     const purchasedItems = JSON.parse(localStorage.getItem('listaComprados') || '[]');
     purchasedItems.push(item);
     localStorage.setItem('listaComprados', JSON.stringify(purchasedItems));
-  
+
     this.itemsByCategory[typedCategory].splice(index, 1);
     this.saveItems();
     this.loadItems();
-  
+
     this.buyItemComponent.loadPurchasedItems();
     this.notifyByuItem.emit();
   }
 
   saveItems(): void {
     localStorage.setItem('itensCategory', JSON.stringify(this.itemsByCategory));
+
+  }
+
+  categoriaPT(category: string): string {
+    switch (category) {
+      case 'cold':
+        return 'frios';
+      case 'perishables':
+        return 'perecíveis';
+      case 'cleaning':
+        return 'limpeza';
+      case 'others':
+        return 'outros';
+      default:
+        return category
+    }
 
   }
 
@@ -164,24 +163,26 @@ export class ListItemsComponent implements OnInit {
     localStorage.removeItem('listaComprados');
   }
 
+
+
   scrollToTop(): void {
     const scrollDuration = 30; // Tempo total em ms
     const startPosition = window.scrollY;
     const startTime = performance.now();
 
     const animateScroll = (currentTime: number) => {
-        const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / scrollDuration, 1);
-        const scrollPosition = startPosition * (1 - progress);
-        
-        window.scrollTo(0, scrollPosition);
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / scrollDuration, 1);
+      const scrollPosition = startPosition * (1 - progress);
 
-        if (progress < 1) {
-            requestAnimationFrame(animateScroll);
-        }
+      window.scrollTo(0, scrollPosition);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
     };
 
     requestAnimationFrame(animateScroll);
-}
+  }
 
 }
