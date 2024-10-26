@@ -39,10 +39,21 @@ export class BuyItemComponent implements OnInit {
     const itemToMoveBack = storePurchasedItems.splice(index, 1)[0]
 
     // retornando item para a lista de compras
-    const shoppingList = JSON.parse(localStorage.getItem('listaCompras') || '[]');
-    shoppingList.push(itemToMoveBack)
-    localStorage.setItem('listaCompras', JSON.stringify(shoppingList))
+    const shoppingList = JSON.parse(localStorage.getItem('itensCategory') || '{}');
 
+    if(itemToMoveBack.category){
+      const category = itemToMoveBack.category.toLowerCase()
+
+      console.log(category);
+      if(!shoppingList[category]){
+        shoppingList.category = []
+      }
+
+      shoppingList[category].push(itemToMoveBack)
+      
+    }
+    
+    localStorage.setItem('itensCategory', JSON.stringify(shoppingList))
     localStorage.setItem('listaComprados', JSON.stringify(storePurchasedItems))
 
     this.loadPurchasedItems();
