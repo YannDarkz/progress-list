@@ -4,7 +4,7 @@
     <h6><strong>💸 Total:</strong> {{totalPrice | currency:'BRL'}}</h6>
 
     <div *ngFor="let category of itemsByCategory | keyvalue">
-        <h5>{{ category.key }}</h5>
+        <h5 >{{categoriaPT(category.key) | uppercase }}</h5>
         <ul *ngIf="category.value.length > 0; else noItems">
           <li *ngFor="let item of category.value; let i = index">
             <app-card-list
