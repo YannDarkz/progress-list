@@ -39,7 +39,7 @@ export class AddItemsComponent {
 
   addItem(): void {
     if (this.addItemForm.valid) {
-      let newItem = this.addItemForm.value
+      let newItem = this.addItemForm.value;
       let currentList = JSON.parse(localStorage.getItem('itensCategory') || '{}');
 
       const category = newItem.category?.toLowerCase();
@@ -63,7 +63,7 @@ export class AddItemsComponent {
         if (!currentList[category]) {
           currentList[category] = [];
         }
-        currentList[category].push(newItem)
+        currentList[category].push(newItem);
       }
 
 
@@ -99,7 +99,6 @@ export class AddItemsComponent {
     this.currentItemIndex = null;
     this.currentItemCategory = null;
   }
-
 
   get itemName() {
     return this.addItemForm.get('name')!;
