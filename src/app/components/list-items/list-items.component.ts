@@ -86,7 +86,6 @@ export class ListItemsComponent implements OnInit {
     }
   }
 
-
   deleteItem(category: string, index: number): void {
     const typedCategory = category as keyof typeof this.itemsByCategory;
     this.itemsByCategory[typedCategory].splice(index, 1);
@@ -127,7 +126,6 @@ export class ListItemsComponent implements OnInit {
       default:
         return category
     }
-
   }
 
   clearList(): void {
@@ -162,8 +160,6 @@ export class ListItemsComponent implements OnInit {
   clearListBuy(): void {
     localStorage.removeItem('listaComprados');
   }
-
-
 
   scrollToTop(): void {
     const scrollDuration = 30; // Tempo total em ms
