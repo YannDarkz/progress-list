@@ -3,7 +3,6 @@
 
     <form [formGroup]="addItemForm" (ngSubmit)="addItem()" novalidate>
 
-
         <div class="form-group">
             <label for="itemName">Nome do Item: </label>
             <input class="input" id="itemName" type="text" formControlName="name" placeholder="Digite o nome do item"
@@ -40,7 +39,6 @@
             
             <div *ngIf="itemCategory.invalid && (itemCategory.touched || itemCategory.touched)">
                 <small *ngIf="itemCategory.errors?.['required']">categoria é obrigatória.  </small>
-                
             </div>
         </div>
 
@@ -56,10 +54,6 @@
             </div>
         </div>
 
-       
-
-    
-
         <div *ngIf="!editing">
             <button type="submit" [disabled]="addItemForm.invalid">Adicionar Item</button>
         </div>
@@ -68,6 +62,5 @@
             <button class="edit" type="submit" [disabled]="addItemForm.invalid">Concluir Edição</button>
             <button class="cancel" type="button" (click)="cancelEdit()">Cancelar</button>
         </div>
-    
     </form>
 </div>
