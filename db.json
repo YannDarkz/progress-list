@@ -1,0 +1,19 @@
+{
+  "cold": [],
+  "perishables": [],
+  "cleaning": [],
+  "others": [],
+  "cold-Buy": [],
+  "perishables-Buy": [],
+  "cleaning-Buy": [],
+  "others-Buy": [],
+  "users": [
+    {
+      "id": "dc87",
+      "userId": "107959240786162842006",
+      "name": "Ian Santos",
+      "email": "iansantosmcqueen@gmail.com",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocISjz7jfgCCx95GoSYT3whq2s9cf3C05ZwuqFzNv_QDjES5CJJBMw=s96-c"
+    }
+  ]
+}
